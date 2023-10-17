@@ -1,0 +1,186 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+
+/*  2.	Матрицы представлены в виде двумерных массивов. Реализовать функции, которые возвращают новый массив
+1.	Сложение и вычитание матриц
+2.	Умножение матрицы на число
+3.	Произведение двух матриц
+4.	Транспонированная матрица
+5.	Функция для определения равенства матриц
+Функции должны иметь проверку на возможность осуществления операции
+Для определения размера матрицы используется функция sizeof()
+*/
+
+// Функция для проверки совместимости двух матриц для сложения и вычитания
+int areMatricesCompatible(int rows1, int cols1, int rows2, int cols2) {
+    return (rows1 == rows2 && cols1 == cols2);
+}
+
+// Функция для сложения двух матриц
+void addMatrices(int A[][100], int B[][100], int C[][100], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            C[i][j] = A[i][j] + B[i][j];
+        }
+    }
+}
+
+// Функция для вычитания двух матриц
+void subtractMatrices(int A[][100], int B[][100], int C[][100], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            C[i][j] = A[i][j] - B[i][j];
+        }
+    }
+}
+
+// Функция для умножения матрицы на число
+void multiplyMatrixByScalar(int matrix[][100], int rows, int cols, int scalar) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            matrix[i][j] *= scalar;
+        }
+    }
+}
+
+// Функция для умножения двух матриц
+void multiplyMatrices(int A[][100], int B[][100], int C[][100], int rows1, int cols1, int cols2) {
+    for (int i = 0; i < rows1; i++) {
+        for (int j = 0; j < cols2; j++) {
+            C[i][j] = 0;
+            for (int k = 0; k < cols1; k++) {
+                C[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
+}
+
+// Функция для вычисления транспонированной матрицы
+void transposeMatrix(int matrix[][100], int rows, int cols, int result[][100]) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result[j][i] = matrix[i][j];
+        }
+    }
+}
+
+// Функция для проверки равенства двух матриц
+int areMatricesEqual(int A[][100], int B[][100], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (A[i][j] != B[i][j]) {
+                return 0; // Матрицы не равны
+            }
+        }
+    }
+    return 1; // Матрицы равны
+}
+
+int main() {
+    int A[100][100], B[100][100], C[100][100];
+    int rows1, cols1, rows2, cols2;
+
+    // Ввод размеров и элементов матриц A и B
+
+    printf("Введите размеры матрицы A (строки и столбцы): ");
+    scanf("%d %d", &rows1, &cols1);
+
+    printf("Введите элементы матрицы A:\n");
+    for (int i = 0; i < rows1; i++) {
+        for (int j = 0; j < cols1; j++) {
+            scanf("%d", &A[i][j]);
+        }
+    }
+
+    printf("Введите размеры матрицы B (строки и столбцы): ");
+    scanf("%d %d", &rows2, &cols2);
+
+    printf("Введите элементы матрицы B:\n");
+    for (int i = 0; i < rows2; i++) {
+        for (int j = 0; j < cols2; j++) {
+            scanf("%d", &B[i][j]);
+        }
+    }
+
+    // Проверка совместимости операций
+    if (rows1 != rows2 || cols1 != cols2) {
+        printf("Операции сложения и вычитания невозможны из-за разных размеров матриц.\n");
+    } else {
+        // Вызов функций для сложения и вычитания матриц
+        addMatrices(A, B, C, rows1, cols1);
+        subtractMatrices(A, B, C, rows1, cols1);
+
+        // Вывод результата сложения и вычитания
+        printf("Результат сложения матриц A и B:\n");
+        for (int i = 0; i < rows1; i++) {
+            for (int j = 0; j < cols1; j++) {
+                printf("%d ", C[i][j]);
+            }
+            printf("\n");
+        }
+
+        printf("Результат вычитания матриц B из A:\n");
+        for (int i = 0; i < rows1; i++) {
+            for (int j = 0; j < cols1; j++) {
+                printf("%d ", C[i][j]);
+            }
+            printf("\n");
+        }
+    }
+
+    // Ввод числа для умножения матрицы A
+    int scalar;
+    printf("Введите число для умножения матрицы A: ");
+    scanf("%d", &scalar);
+
+    // Вызов функции для умножения матрицы на число
+    multiplyMatrixByScalar(A, rows1, cols1, scalar);
+
+    // Вывод результата умножения
+    printf("Результат умножения матрицы A на число %d:\n", scalar);
+    for (int i = 0; i < rows1; i++) {
+        for (int j = 0; j < cols1; j++) {
+            printf("%d ", A[i][j]);
+        }
+        printf("\n");
+    }
+
+    // Проверка совместимости операции умножения матриц
+    if (cols1 != rows2) {
+        printf("Операция умножения матриц невозможна из-за несовпадения размеров.\n");
+    } else {
+        // Вызов функции для умножения матриц
+        multiplyMatrices(A, B, C, rows1, cols1, cols2);
+
+        // Вывод результата умножения матриц
+        printf("Результат умножения матрицы A на B:\n");
+        for (int i = 0; i < rows1; i++) {
+            for (int j = 0; j < cols2; j++) {
+                printf("%d ", C[i][j]);
+            }
+            printf("\n");
+        }
+    }
+
+    // Вызов функции для вычисления транспонированной матрицы
+    int transposeResult[100][100];
+    transposeMatrix(A, rows1, cols1, transposeResult);
+
+    // Вывод транспонированной матрицы
+    printf("Транспонированная матрицы A:\n");
+    for (int i = 0; i < cols1; i++) {
+        for (int j = 0; j < rows1; j++) {
+            printf("%d ", transposeResult[i][j]);
+        }
+        printf("\n");
+    }
+
+    // Проверка равенства матриц A и B
+    if (areMatricesEqual(A, B, rows1, cols1)) {
+        printf("Матрицы A и B равны.\n");
+    } else {
+        printf("Матрицы A и B не равны.\n");
+    }
+
+    return 0;
+}
