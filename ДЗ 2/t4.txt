@@ -1,0 +1,24 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+
+//  4.	Дано натуральное число n. Выведите все числа от 1 до n. Реализовать при помощи рекурсии.)
+
+int printNumbers(int n) {
+    if (n == 0) { // базовый случай
+        return;
+    } else {
+        printNumbers(n - 1); // рекурсивный вызов
+        printf("%d ", n);
+    }
+}
+
+int main() {
+    int n;
+    printf("Введите натуральное число: ");
+    scanf("%d", &n);
+
+    printf("Числа от 1 до %d: ", n);
+    printNumbers(n);
+
+    return 0;
+}

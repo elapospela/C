@@ -1,0 +1,118 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+
+//  2.	Матрицы представлены в виде двумерных массивов. Реализовать функции, которые возвращают новый массив
+//   1.	Сложение и вычитание матриц
+//   2.	Умножение матрицы на число
+//   3.	Произведение двух матриц
+//   4.	Транспонированная матрица
+//   5.	Функция для определения равенства матриц
+//   6.	Функции должны иметь проверку на возможность осуществления операции
+//   7.	Для определения размера матрицы используется функция sizeof()
+
+int addMatrix(int a[][3], int b[][3], int result[][3], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result[i][j] = a[i][j] + b[i][j];
+        }
+    }
+}
+
+int subtractMatrix(int a[][3], int b[][3], int result[][3], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result[i][j] = a[i][j] - b[i][j];
+        }
+    }
+}
+
+int multiplyMatrixByScalar(int a[][3], int scalar, int result[][3], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result[i][j] = a[i][j] * scalar;
+        }
+    }
+}
+
+int multiplyMatrix(int a[][3], int b[][3], int result[][3], int rows1, int cols1, int rows2, int cols2) {
+    if (cols1 != rows2) {
+        printf("Невозможно перемножить матрицы\n");
+        return;
+    }
+    for (int i = 0; i < rows1; i++) {
+        for (int j = 0; j < cols2; j++) {
+            result[i][j] = 0;
+            for (int k = 0; k < cols1; k++) {
+                result[i][j] += a[i][k] * b[k][j];
+            }
+        }
+    }
+}
+
+int transposeMatrix(int a[][3], int result[][3], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result[j][i] = a[i][j];
+        }
+    }
+}
+
+int areMatricesEqual(int a[][3], int b[][3], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (a[i][j] != b[i][j]) {
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
+int printMatrix(int a[][3], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            printf("%d ", a[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    int a[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    int b[3][3] = {{9, 8, 7}, {6, 5, 4}, {3, 2, 1}};
+    int c[3][3];
+
+    // Сложение матриц
+    addMatrix(a, b, c, 3, 3);
+    printf("a + b:\n");
+    printMatrix(c, 3, 3);
+
+    // Вычитание матриц
+    subtractMatrix(a, b, c, 3, 3);
+    printf("\na - b:\n");
+    printMatrix(c, 3, 3);
+
+    // Умножение матрицы на число
+    multiplyMatrixByScalar(a, 2, c, 3, 3);
+    printf("\na * 2:\n");
+    printMatrix(c, 3, 3);
+
+    // Умножение матриц
+    int d[3][2] = {{1, 2}, {3, 4}, {5, 6}};
+    int e[2][4] = {{1, 2, 3, 4}, {5, 6, 7, 8}};
+    int f[3][4];
+    multiplyMatrix(d, e, f, 3, 2, 2, 4);
+    printf("\nd * e:\n");
+    printMatrix(f, 3, 4);
+
+    // Транспонирование
+    transposeMatrix(a, c, 3, 3);
+    printf("\nТранспонированная a:\n");
+    printMatrix(c, 3, 3);
+
+    // Проверка равенства матриц
+    printf("\na == b: %d\n", areMatricesEqual(a, b, 3, 3));
+    printf("a == a: %d\n", areMatricesEqual(a, a, 3, 3));
+
+    return 0;
+}

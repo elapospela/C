@@ -1,0 +1,49 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+
+//  3.	Реализовать функцию, которая на вход получает одномерный массив и булевскую переменную. Функция возвращает массив той же размерности, и отсортированной в зависимости от булевской переменной (true – по возрастанию, false – по убыванию)
+
+int sortArray(int arr[], int size, int ascending) {
+    int temp;
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = i + 1; j < size; j++) {
+            if (ascending) {
+                if (arr[i] > arr[j]) {
+                    temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
+            } else {
+                if (arr[i] < arr[j]) {
+                    temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    int arr[] = {5, 2, 8, 3, 1};
+    int size = sizeof(arr) / sizeof(arr[0]);
+
+    printf("Изначальный массив: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    sortArray(arr, size, 1);
+    printf("\nСортировка по возрастанию: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    sortArray(arr, size, 0);
+    printf("\nСортировка по убыванию: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    return 0;
+}
