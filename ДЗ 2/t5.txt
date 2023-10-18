@@ -1,0 +1,79 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+/*  5. Напишите функцию, которая проверяет, входит ли в одномерный массив заданный элемент или нет. Используйте перебор и двоичный поиск для решения этой задачи. Сравните время выполнения обоих решений для больших массивов (например, 100000000 элементов). Реализовать при помощи рекурсии на языке c.
+*/
+
+// Перебор (линейный поиск):
+int linearSearch(int arr[], int n, int x) {
+    for (int i = 0; i < n; i++) {
+        if (arr[i] == x) {
+            return 1; // Элемент найден
+        }
+    }
+    return 0; // Элемент не найден
+}
+
+// Двоичный поиск:
+int binarySearch(int arr[], int left, int right, int x) {
+    if (left > right) {
+        return 0; // Элемент не найден
+    }
+
+    int mid = left + (right - left) / 2;
+
+    if (arr[mid] == x) {
+        return 1; // Элемент найден
+    } else if (arr[mid] < x) {
+        return binarySearch(arr, mid + 1, right, x);
+    } else {
+        return binarySearch(arr, left, mid - 1, x);
+    }
+}
+
+/* 
+Теперь можно использовать эти функции для поиска элемента в массиве и
+измерения времени выполнения каждого метода для больших массивов.
+*/
+int main() {
+    int n = 100000000;
+    int *arr = (int*)malloc(n * sizeof(int)); // Выделяем динамическую память
+
+    for (int i = 0; i < n; i++) {
+        arr[i] = i;
+    }
+
+    int x = 99999999;
+
+    clock_t start, end;
+
+    // Измеряем время выполнения линейного поиска
+    start = clock();
+    int resultLinear = linearSearch(arr, n, x);
+    end = clock();
+    double linearSearchTime = (double)(end - start) / CLOCKS_PER_SEC;
+
+    // Измеряем время выполнения двоичного поиска
+    start = clock();
+    int resultBinary = binarySearch(arr, 0, n - 1, x);
+    end = clock();
+    double binarySearchTime = (double)(end - start) / CLOCKS_PER_SEC;
+
+    if (resultLinear) {
+        printf("Линейный поиск: Элемент найден. Время выполнения: %f секунд\n", linearSearchTime);
+    } else {
+        printf("Линейный поиск: Элемент не найден. Время выполнения: %f секунд\n", linearSearchTime);
+    }
+
+    if (resultBinary) {
+        printf("Двоичный поиск: Элемент найден. Время выполнения: %f секунд\n", binarySearchTime);
+    } else {
+        printf("Двоичный поиск: Элемент не найден. Время выполнения: %f секунд\n", binarySearchTime);
+    }
+
+    free(arr); // Освобождаем выделенную память
+
+    return 0;
+}
