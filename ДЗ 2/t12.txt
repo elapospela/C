@@ -1,0 +1,44 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+
+/*  12.Упорядочить массив по неубыванию, используя алгоритм сортировки выбором: отыскивается максимальный элемент и переносится в конец массива; затем этот метод применяется ко всем элементам, кроме последнего, который уже находится на своем месте, и т.д.
+*/
+
+void selectionSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+        
+        // Найдем индекс минимального элемента в оставшейся части массива
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+        
+        // Поменяем местами текущий элемент и минимальный элемент
+        int temp = arr[i];
+        arr[i] = arr[minIndex];
+        arr[minIndex] = temp;
+    }
+}
+
+int main() {
+    int arr[] = {64, 90, 34, 25, 12, 22, 11, 90};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    printf("Исходный массив: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    selectionSort(arr, n);
+
+    printf("Упорядоченный массив (по неубыванию): ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    return 0;
+}

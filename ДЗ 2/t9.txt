@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+/*  9.В массиве числа образуют неубывающую последовательность. Несколько элементов, идущих подряд, равны между собой. Найти количество таких элементов.
+*/
+
+int countConsecutiveDuplicates(int arr[], int n) {
+    int count = 0;
+
+    for (int i = 0; i < n - 1; i++) {
+        if ((arr[i] == arr[i + 1]) || (arr[i] == arr[i - 1])){
+            count ++;
+        }
+    }
+
+    return count;
+}
+
+int main() {
+    int arr[] = {1, 1, 2, 2, 2, 3, 4, 4, 4, 4, 5, 5};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    int duplicatesCount = countConsecutiveDuplicates(arr, n);
+
+    printf("Количество элементов, идущих подряд и равных между собой: %d\n", duplicatesCount);
+
+    return 0;
+}

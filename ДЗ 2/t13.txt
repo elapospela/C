@@ -1,0 +1,42 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+
+/*  13.Найти сумму элементов массива, расположенных между максимальным и минимальным элементами (включительно).
+*/
+
+int main() {
+    int arr[] = {4, 8, 6, 2, 12, 7, 3, 10, 1};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    if (n < 2) {
+        printf("Массив должен содержать как минимум два элемента.\n");
+        return 1; // Завершение программы с ошибкой
+    }
+
+    int minIndex = 0;
+    int maxIndex = 0;
+
+    // Найдем индексы минимального и максимального элементов
+    for (int i = 1; i < n; i++) {
+        if (arr[i] < arr[minIndex]) {
+            minIndex = i;
+        } else if (arr[i] > arr[maxIndex]) {
+            maxIndex = i;
+        }
+    }
+
+    // Определяем начальный и конечный индексы для суммирования
+    int start = (minIndex < maxIndex) ? minIndex : maxIndex;
+    int end = (minIndex < maxIndex) ? maxIndex : minIndex;
+
+    int sum = 0;
+
+    // Суммируем элементы между минимальным и максимальным элементами
+    for (int i = start; i <= end; i++) {
+        sum += arr[i];
+    }
+
+    printf("Сумма элементов между минимальным и максимальным элементами: %d\n", sum);
+
+    return 0;
+}

@@ -1,0 +1,47 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+#include <math.h>
+
+/*  7. Найти элемент, наиболее близкий к среднему значению всех элементов массива.
+*/
+
+int findClosestToAverage(int arr[], int n) {
+    if (n == 0) {
+        // Обработка случая, когда массив пуст
+        return -1; // Вернуть -1 в этом случае
+    }
+
+    int sum = 0;
+    for (int i = 0; i < n; i++) {
+        sum += arr[i];
+    }
+
+    double average = (double)sum / n;
+    int closestIndex = 0;
+    double minDifference = fabs(average - arr[0]);
+
+    for (int i = 1; i < n; i++) {
+        double difference = fabs(average - arr[i]);
+        if (difference < minDifference) {
+            minDifference = difference;
+            closestIndex = i;
+        }
+    }
+
+    return closestIndex;
+}
+
+int main() {
+    int arr[] = {1, 4, 7, 9, 13, 2};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    int closestIndex = findClosestToAverage(arr, n);
+
+    if (closestIndex != -1) {
+        printf("Элемент ближайший к среднему: %d\n", arr[closestIndex]);
+    } else {
+        printf("Массив пуст.\n");
+    }
+
+    return 0;
+}

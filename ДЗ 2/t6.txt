@@ -1,0 +1,41 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+#include <math.h>
+
+/*  6. Найдите корень уравнения cos x5 + x4-345.3*x-23=0 на отрезке [0;10] с точностью по x не хуже 0.001. Известно, что на этом промежутке корень единственный. Используйте для этого метод деления отрезка пополам (и рекурсию).
+*/
+
+// Функция, для которой ищем корень
+double equation(double x) {
+    return cos(pow(x, 5)) + pow(x, 4) - 345.3 * x - 23;
+}
+
+// Функция для поиска корня методом деления отрезка пополам
+double findRoot(double a, double b, double epsilon) {
+    double mid = (a + b) / 2;
+    if (b - a < epsilon) {
+        return mid; // Корень найден с заданной точностью
+    }
+
+    double fa = equation(a);
+    double fb = equation(b);
+    double fmid = equation(mid);
+
+    if (fa * fmid < 0) {
+        return findRoot(a, mid, epsilon); // Рекурсивно ищем в левой половине
+    } else {
+        return findRoot(mid, b, epsilon); // Рекурсивно ищем в правой половине
+    }
+}
+
+int main() {
+    double a = 0.0; // Левая граница отрезка
+    double b = 10.0; // Правая граница отрезка
+    double epsilon = 0.001; // Требуемая точность
+
+    double root = findRoot(a, b, epsilon);
+
+    printf("Корень уравнения: %lf\n", root);
+
+    return 0;
+}

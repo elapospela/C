@@ -1,0 +1,29 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+
+/*  8.Определить, имеются ли в массиве одинаковые элементы.
+*/
+
+int hasDuplicate(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (arr[i] == arr[j]) {
+                return 1; // Найдено одинаковые элементы
+            }
+        }
+    }
+    return 0; // Одинаковых элементов не найдено
+}
+
+int main() {
+    int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 1};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    if (hasDuplicate(arr, n)) {
+        printf("В массиве имеются одинаковые элементы.\n");
+    } else {
+        printf("В массиве нет одинаковых элементов.\n");
+    }
+
+    return 0;
+}
