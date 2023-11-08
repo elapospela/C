@@ -1,0 +1,30 @@
+###5 Модифицируйте программу упр. 1 так, чтобы родительская и дочерняя нити распечатали адрес какой-либо локальной переменной. (используйте printf("%p", &i));. Убедитесь, что различные нити используют различные стеки.
+#include <stdio.h>
+#include <pthread.h>
+
+void *thread_function(void *arg) {
+    int local_var = 42; // Локальная переменная
+    printf("Thread: Local Variable Address: %p\n", &local_var);
+    return NULL;
+}
+
+int main() {
+    // Отключаем буферизацию stdout
+    setvbuf(stdout, NULL, _IONBF, 0);
+
+    pthread_t thread;
+    int result = pthread_create(&thread, NULL, thread_function, NULL);
+
+    if (result != 0) {
+        perror("Thread creation failed");
+        return 1;
+    }
+
+    int local_var = 10; // Локальная переменная в главной нити
+    printf("Main: Local Variable Address: %p\n", &local_var);
+
+    // Ждем завершения созданного потока
+    pthread_join(thread, NULL);
+
+    return 0;
+}

@@ -1,0 +1,33 @@
+###8 Дочерняя поток должна распечатывать текст на экран. Через две секунды после создания дочерней нити, родительская поток должна прервать ее вызовом функции pthread_cancel.
+#include <stdio.h>
+#include <pthread.h>
+#include <unistd.h>
+
+void *child_thread(void *arg) {
+    // Ждем, чтобы быть уверенными, что родительский поток отправил cancel
+    sleep(2);
+    printf("Child Thread: Received a cancel request, Thread ID: %lu\n", (unsigned long)pthread_self());
+    pthread_testcancel();
+    return NULL;
+}
+
+int main() {
+    pthread_t thread;
+    int result = pthread_create(&thread, NULL, child_thread, NULL);
+
+    if (result != 0) {
+        perror("Thread creation failed");
+        return 1;
+    }
+
+    // Подождать 2 секунды
+    sleep(2);
+
+    // Отправляем запрос на отмену дочерней нити
+    pthread_cancel(thread);
+
+    // Ждем завершения созданной нити
+    pthread_join(thread, NULL);
+
+    return 0;
+}

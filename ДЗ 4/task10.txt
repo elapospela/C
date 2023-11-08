@@ -1,0 +1,68 @@
+###10 Модифицируйте программу упр. 1 так, чтобы вывод родительской и дочерней нитей был синхронизован: сначала родительская поток 
+выводила первую строку, затем дочерняя, затем родительская вторую строку и т.д. Используйте мутексы. Запрещается использовать явные (pthread_yeld) и неявные (sleep и т.д.) передачи управления между нитями и ожидание в цикле.
+#include <stdio.h>
+#include <pthread.h>
+
+// Объявляем мьютексы
+pthread_mutex_t parent_mutex;
+pthread_mutex_t child_mutex;
+
+void *child_thread(void *arg) {
+    for (int i = 0; i < 10; i++) {
+        // Захватываем мьютекс родительской нити
+        pthread_mutex_lock(&parent_mutex);
+
+        // Выводим строку
+        printf("Child: Line %d\n", i + 1);
+
+        // Освобождаем мьютекс родительской нити
+        pthread_mutex_unlock(&parent_mutex);
+
+        // Сигнализируем родительской нити, что дочерняя нить закончила вывод
+        pthread_mutex_lock(&child_mutex);
+        pthread_mutex_unlock(&child_mutex);
+    }
+    return NULL;
+}
+
+int main() {
+    // Инициализируем мьютексы
+    pthread_mutex_init(&parent_mutex, NULL);
+    pthread_mutex_init(&child_mutex, NULL);
+
+    // Запускаем дочернюю нить
+    pthread_t thread;
+    int result = pthread_create(&thread, NULL, child_thread, NULL);
+
+    if (result != 0) {
+        perror("Thread creation failed");
+        return 1;
+    }
+
+    for (int i = 0; i < 10; i++) {
+        // Захватываем мьютекс родительской нити
+        pthread_mutex_lock(&parent_mutex);
+
+        // Выводим строку
+        printf("Main: Line %d\n", i + 1);
+
+        // Освобождаем мьютекс родительской нити
+        pthread_mutex_unlock(&parent_mutex);
+
+        // Сигнализируем дочерней нити, что родительская нить закончила вывод
+        pthread_mutex_unlock(&child_mutex);
+
+        // Ожидаем, пока дочерняя нить закончит вывод
+        pthread_mutex_lock(&child_mutex);
+        pthread_mutex_unlock(&child_mutex);
+    }
+
+    // Ждем завершения созданной нити
+    pthread_join(thread, NULL);
+
+    // Уничтожаем мьютексы
+    pthread_mutex_destroy(&parent_mutex);
+    pthread_mutex_destroy(&child_mutex);
+
+    return 0;
+}
